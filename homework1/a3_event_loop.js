@@ -35,6 +35,7 @@ function runA3(){
     // TODO: Write code that produces EXACTLY the EXPECTED order.
     // Start with the first sync log:
     log("1 sync start");
+    setTimeout(() => log("7 timeout"), 1);
 
     // Schedule a macrotask (should be LAST overall):
     // TODO: set a timeout that logs "6 timeout"

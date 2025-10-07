@@ -61,6 +61,14 @@ function runA1() {
         return Rectangle.prototype.describe.call(this) + ` Square side=${this.width}`
     };
 
+    function RedSquare(side){
+        Square.call(this, side,side);
+    }
+
+    RedSquare.prototype = Object.create(Square.prototype);
+    RedSquare.prototype.constructor = RedSquare;
+    RedSquare.prototype.color = function () { return "Red"; };
+
     // ─────────────────────────────────────────────────────────────────────
     // Self-checks (leave these as-is; adjust only when implementing)
     try {
