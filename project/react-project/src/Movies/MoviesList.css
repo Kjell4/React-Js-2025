@@ -16,3 +16,26 @@
 .movies-list{
     margin-left: 40px;
 }
+
+.search-bar {
+  align-items: center;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.search-bar input {
+  padding: 8px 32px 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 220px;
+  font-size: 14px;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  width:  80px;
+  background-color: #ff2424;
+}
