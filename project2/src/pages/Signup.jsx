@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { auth } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
-import "./Login.css";
+import "./Signup.css";
 
-export default function Login() {
+export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -12,13 +12,13 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  async function handleLogin(e) {
+  async function handleSignup(e) {
     e.preventDefault();
-    setLoading(true);
     setError("");
+    setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       navigate("/profile");
     } catch (err) {
       setError(err.message);
@@ -28,33 +28,33 @@ export default function Login() {
   }
 
   return (
-    <section className="login-container">
-      <h1 className="login-title">Login</h1>
+    <section className="signup-container">
+      <h1 className="signup-title">Signup</h1>
 
-      <form onSubmit={handleLogin} className="login-form">
+      <form onSubmit={handleSignup} className="signup-form">
         <input
           type="email"
           placeholder="Email"
-          className="login-input"
+          className="signup-input"
           onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
           type="password"
           placeholder="Password"
-          className="login-input"
+          className="signup-input"
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button disabled={loading} className="login-button">
-          {loading ? "Logging in..." : "Login"}
+        <button disabled={loading} className="signup-button">
+          {loading ? "Creating..." : "Signup"}
         </button>
       </form>
 
-      {error && <p className="login-error">{error}</p>}
+      {error && <p className="signup-error">{error}</p>}
 
-      <p className="login-footer">
-        Don’t have an account? <Link to="/signup">Signup</Link>
+      <p className="signup-footer">
+        Already have an account? <Link to="/login">Login</Link>
       </p>
     </section>
   );

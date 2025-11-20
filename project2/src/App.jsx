@@ -5,19 +5,26 @@ import About from "./pages/About";
 import SomethingList from "./pages/SomethingList";
 import SomethingDetails from "./pages/SomethingDetails";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Profile from "./pages/Profile";
+import { AuthProvider } from "./AuthContext";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <RootLayout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/items" element={<SomethingList />} />
-          <Route path="/items/:id" element={<SomethingDetails />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </RootLayout>
+      <AuthProvider>
+        <RootLayout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/items" element={<SomethingList />} />
+            <Route path="/items/:id" element={<SomethingDetails />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </RootLayout>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
