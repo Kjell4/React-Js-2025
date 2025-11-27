@@ -1,27 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import * as itemsService from "../services/itemsService";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchItemById, clearSelected } from "../features/items/itemsSlice";
+
 import Spinner from "../components/Spinner";
 import ErrorBox from "../components/ErrorBox";
 
 export default function SomethingDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [item, setItem] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+
+  const {
+    selectedItem,
+    loadingItem,
+    errorItem,
+  } = useSelector((state) => state.items);
 
   useEffect(() => {
-    itemsService
-      .getById(id)
-      .then(setItem)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [id]);
+    dispatch(fetchItemById(id));
 
-  if (loading) return <Spinner />;
-  if (error) return <ErrorBox message={error} />;
-  if (!item) return <ErrorBox message="Character not found" />;
+    return () => dispatch(clearSelected());
+  }, [id, dispatch]);
+
+  if (loadingItem) return <Spinner />;
+  if (errorItem) return <ErrorBox message={errorItem} />;
+  if (!selectedItem) return <ErrorBox message="Character not found" />;
+
+  const item = selectedItem;
 
   return (
     <section style={{ textAlign: "center" }}>
@@ -41,3 +47,4 @@ export default function SomethingDetails() {
     </section>
   );
 }
+

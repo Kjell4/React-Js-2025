@@ -1,41 +1,40 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import * as itemsService from "../services/itemsService";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchItems, setQuery } from "../features/items/itemsSlice";
+
 import Spinner from "../components/Spinner";
 import ErrorBox from "../components/ErrorBox";
 import Card from "../components/Card";
 import "./SomethingList.css";
 
 export default function SomethingList() {
+  const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
+
   const query = searchParams.get("q") || "";
 
-  const [inputValue, setInputValue] = useState(query);
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const {
+    list,
+    loadingList,
+    errorList,
+    query: reduxQuery,
+  } = useSelector((state) => state.items);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
+    dispatch(setQuery(query));
+    dispatch(fetchItems(query));
+  }, [query, dispatch]);
 
-    itemsService
-      .getAll(query)
-      .then(setItems)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [query]);
-
-  const handleChange = (e) => setInputValue(e.target.value);
+  const handleChange = (e) => dispatch(setQuery(e.target.value));
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setSearchParams(inputValue ? { q: inputValue } : {});
-    setInputValue("");
+    setSearchParams(reduxQuery ? { q: reduxQuery } : {});
   };
 
-  if (loading) return <Spinner />;
-  if (error) return <ErrorBox message={error} />;
+  if (loadingList) return <Spinner />;
+  if (errorList) return <ErrorBox message={errorList} />;
 
   return (
     <section className="something-list-section">
@@ -45,7 +44,7 @@ export default function SomethingList() {
         <input
           type="text"
           placeholder="Search characters..."
-          value={inputValue}
+          value={reduxQuery}
           onChange={handleChange}
           className="something-list-input"
         />
@@ -55,8 +54,8 @@ export default function SomethingList() {
       </form>
 
       <div className="something-list-cards">
-        {items.length > 0 ? (
-          items.map((item) => <Card key={item.id} item={item} />)
+        {list.length > 0 ? (
+          list.map((item) => <Card key={item.id} item={item} />)
         ) : (
           <p>No characters found</p>
         )}
