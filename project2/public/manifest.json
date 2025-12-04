@@ -1,0 +1,21 @@
+{
+  "name": "Project2 - (PWA)",
+  "short_name": "Project2",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0b5cff",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "scope": "/"
+}
